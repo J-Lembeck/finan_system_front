@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Icon } from '@iconify/react';
 import type { MenuProps, MenuTheme } from 'antd';
-import { Menu } from 'antd';
+import { Menu, Switch } from 'antd';
 import { Link } from 'react-router-dom';
 
 type MenuItem = Required<MenuProps>['items'][number];
@@ -42,9 +42,9 @@ export default function SideMenu() {
     const [theme, setTheme] = useState<MenuTheme>('dark');
     const [current, setCurrent] = useState('1');
 
-    // const changeTheme = (value: boolean) => {
-    //     setTheme(value ? 'dark' : 'light');
-    // };
+    const changeTheme = (value: boolean) => {
+        setTheme(value ? 'dark' : 'light');
+    };
 
     const onClick: MenuProps['onClick'] = (e) => {
         console.log('click ', e);
@@ -53,14 +53,14 @@ export default function SideMenu() {
 
     return (
         <>
-            {/* <div>
+            <div>
                 <Switch
                     checked={theme === 'dark'}
                     onChange={changeTheme}
                     checkedChildren="Dark"
                     unCheckedChildren="Light"
                 />
-            </div> */}
+            </div>
             <br />
             <br />
             <Menu
