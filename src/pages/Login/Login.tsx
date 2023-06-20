@@ -1,11 +1,9 @@
-import { useState, useEffect } from "react";
 import api from "../../services/api"
 import { useNavigate } from 'react-router-dom';
 import { Form, Input, Button } from "antd";
 
 function Login() {
 
-    const [ token, setToken ] = useState("");
     const navigate = useNavigate();
 
     const onFinish = (values: any) => {
