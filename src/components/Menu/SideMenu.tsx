@@ -53,7 +53,7 @@ export default function SideMenu() {
 
     return (
         <>
-            <div>
+            {/* <div>
                 <Switch
                     checked={theme === 'dark'}
                     onChange={changeTheme}
@@ -62,7 +62,7 @@ export default function SideMenu() {
                 />
             </div>
             <br />
-            <br />
+            <br /> */}
             <Menu
                 theme={theme}
                 onClick={onClick}
