@@ -34,7 +34,7 @@ const Banks = () => {
 					id: item.id,
 					description: item.bankName,
 					account: item.bankCode,
-					balance: ""
+					balance: item.balance
 				};
 			  });
 			  setTableData(banks);
