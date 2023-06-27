@@ -56,7 +56,7 @@ function Dashboard() {
 
         api.get("/accounting_record/findChartValues", {
             params: {
-                userId: 1,
+                userId: localStorage.getItem("userId"),
                 year: year
             }
         }).then((response) => {

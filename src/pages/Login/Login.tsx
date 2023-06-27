@@ -7,12 +7,13 @@ function Login() {
     const navigate = useNavigate();
 
     const onFinish = (values: any) => {
-        api.post("/login", {
-            user: values.userName,
+        api.post("/user/login", {
+            userName: values.userName,
             password: values.passWord
         }).then((response) => {
             if(response.data.auth){
-                localStorage.setItem("accesToken", response.data.token);
+                console.log(response.data.id)
+                localStorage.setItem("userId", response.data.id);
                 navigate("/dashboard");
             }
         })
