@@ -23,17 +23,7 @@ ChartJS.register(
 function Dashboard() {
 
     const [dashboard, setDashboard] = useState<DashboardProps>();
-    
-    const data = {
-        labels: ["1", "2", "3", "4", "5"],
-        datasets: [{
-            data: [2,4,5,7,34],
-            backgroundColor: 'transparent',
-            borderColor: "#1677ff",
-            pointBorderColor: "transparent",
-            tension: 0.1
-        }]
-    }
+    const [data, setData] = useState<any>();
 
     const options = {
         scales: {
@@ -50,6 +40,7 @@ function Dashboard() {
         let momentDate = moment(today);
         momentDate = momentDate.subtract(1, 'months');
         const formattedDate = momentDate.format('DD-MM-YYYY');
+        const year = momentDate.year();
 
         api.get("/accounting_record/findDashboard", {
             params: {
@@ -62,7 +53,37 @@ function Dashboard() {
                 setDashboard(dashboardData);
             }
         })
-    })
+
+        api.get("/accounting_record/findChartValues", {
+            params: {
+                userId: 1,
+                year: year
+            }
+        }).then((response) => {
+            if(response.status = 200){
+                const labels = response.data.map((value: any) => {
+                    return value.label
+                })
+                const values = response.data.map((value: any) => {
+                    return value.value
+                })
+
+                const dataValidated = {
+                    labels: labels,
+                    datasets: [{
+                        data: values,
+                        backgroundColor: 'transparent',
+                        borderColor: "#1677ff",
+                        pointBorderColor: "transparent",
+                        tension: 0.1
+                    }]
+                }
+                console.log(dataValidated);
+
+                setData(dataValidated);
+            }
+        })
+    }, [])
 
     return (
         <main id="main">
@@ -85,7 +106,9 @@ function Dashboard() {
                     <Card style={{width: "100%"}}>
                         <h2>Evolução do Faturamento</h2>
                         <div className="main-chart">
-                            <Line data={data} options={options}></Line>
+                            {data && 
+                                <Line data={data} options={options}></Line>
+                            }
                         </div>
                     </Card>
                 </div>
