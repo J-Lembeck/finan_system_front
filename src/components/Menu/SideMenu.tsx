@@ -26,7 +26,7 @@ const items: MenuItem[] = [
     getItem(<Link to="/dashboard" >Dashboard</Link>, '1', <Icon icon="ant-design:stock-outlined" style={{ fontSize: "20px" }} />),
 
     getItem('Contas', 'sub1', <Icon icon="ph:money-thin" style={{ fontSize: "20px" }} />, [
-        getItem('A pagar', '3'),
+        getItem(<Link to="/topay" >A pagar</Link>, '3'),
         getItem('A receber', '4'),
     ]),
 
