@@ -93,7 +93,7 @@ function Dashboard() {
                     </Card>
                     <Card style={{width: "31%"}}>
                         <p>Saídas do último mês</p>
-                        <h1>R$ {dashboard?.paidValue?.toFixed(2)}</h1>
+                        <h1>R$ {"-" + dashboard?.paidValue?.toFixed(2)}</h1>
                     </Card>
                     <Card style={{width: "31%"}}>
                         <p>Balanço final</p>
