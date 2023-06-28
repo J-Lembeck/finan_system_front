@@ -9,7 +9,7 @@ export type CategoriesTableData = {
 
 export type ValueForm = {
     description: string;
-    type: number;
+    type: String;
 }
 
 export interface CategoriesTableProps {

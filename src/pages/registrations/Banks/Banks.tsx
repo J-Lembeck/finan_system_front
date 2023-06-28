@@ -25,7 +25,11 @@ const Banks = () => {
 	}, []);
 
 	function loadBanksData() {
-		api.get("/bank/findAll").then((response) => {
+		api.get("/bank/findAll", {
+			params: {
+				userId: localStorage.getItem("userId")
+			}
+		}).then((response) => {
 			console.log(response);
 			if (response.status === 200) {
 			  const banks = response.data.map((item: any) => {
@@ -110,6 +114,7 @@ const Banks = () => {
 					bankName: bank.description,
 					bankCode: bank.account,
 					balance: bank.balance,
+					idUser: localStorage.getItem("userId")
 				}
 			});
 

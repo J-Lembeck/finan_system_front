@@ -6,6 +6,7 @@ import { Key } from 'antd/es/table/interface'
 import { SuppliersTableData, ValueForm } from './ISuppliers'
 import { Form } from "antd";
 import { Notification } from '../../../components/Notification/Notification'
+import api from '../../../services/api';
 
 const Supliers = () => {
 
@@ -20,16 +21,33 @@ const Supliers = () => {
 	const [form] = Form.useForm();
 
 	useEffect(() => {
-		const fornecedores = [
-			{ key: 1, id: 12345, identification: '123.456.789-00', name: 'Teste I', tel: '47 99999-8888' },
-			{ key: 2, id: 67890, identification: '12.345.678/0001-90', name: 'Teste II', tel: '47 11111-2222' },
-			{ key: 3, id: 54321, identification: '987.654.321-00', name: 'Teste III', tel: '47 33333-4444' },
-			{ key: 4, id: 98765, identification: '98.765.432/0001-21', name: 'Teste IV', tel: '47 7777-8888' },
-		];
-
-		setTableData(fornecedores);
-		setIsFetching(false);
+		loadSuppliers();
 	}, []);
+
+	function loadSuppliers() {
+		api.get("/supplier/findAll", {
+			params: {
+				userId: localStorage.getItem("userId")
+			}
+		}).then((response) => {
+			if(response.status = 200){
+				const fornecedores = response.data.map((item: any) => {
+					return {
+						key: item.id,
+						id: item.id,
+						identification: item.cnpj,
+						name: item.name,
+						tel: item.phone
+					}
+				})
+
+				setTableData(fornecedores);
+				setIsFetching(false);
+			}
+		}).catch((err) => {
+			console.log("Erro")
+		})
+	}
 
 	function handleOpenModal(isNew: boolean) {
 		if (isNew) {
@@ -50,20 +68,14 @@ const Supliers = () => {
 	}
 
 	function handleDelete() {
-
-		let tableList = [...tableData];
-
-		selectedRows.forEach(row => {
-			const i = tableList.findIndex((supplier) => (supplier.id === row.id));
-			tableList.splice(i, 1);
-		});
-
-		setIsFetching(true);
-
-		onDeleteSupplier(tableList);
+	api.delete(`/supplier?ids=${selectedRowKeys}`)
+		.then((response) => {
+			setIsFetching(true);
+			onDeleteSupplier(response);
+		})
 	}
 
-	function onDeleteSupplier(response: SuppliersTableData[]) {
+	function onDeleteSupplier(response: any) {
         if(response){
             Notification({
                 type: "success", 
@@ -71,8 +83,8 @@ const Supliers = () => {
             });
         }
 
-		setTableData(response);
-        
+		setIsFetching(true);
+		loadSuppliers();
 		setIsFetching(false);
     };
 
@@ -96,25 +108,37 @@ const Supliers = () => {
 
 		const suppliersToSave = data.map(
 			supplier => {
-
-				const id = Math.floor(Math.random() * (9999 - 1 + 1)) + 1;
-
 				return {
-					id: isNewSupplier ? id : selectedRows[0].id,
-					key: isNewSupplier ? id : selectedRowKeys[0],
-					identification: supplier.identification,
+					id: isNewSupplier ? null : selectedRows[0].id,
+					key: isNewSupplier ? null : selectedRowKeys[0],
+					cnpj: supplier.identification,
 					name: supplier.name,
-					tel: supplier.tel,
+					phone: supplier.tel,
+					idUser: localStorage.getItem("userId")
 				}
+			}
+		);
+
+		if(isNewSupplier) {
+			api.post("/supplier", suppliersToSave)
+			.then((response) => {
+				setIsFetching(true);
+				loadSuppliers();
+				onSaveSupplier(response);
 			});
+		} else {
+			api.put("/supplier", suppliersToSave[0]).then((response) => {
+				setIsFetching(true);
+				loadSuppliers();
+				onSaveSupplier(response);
+			})
+		}
 
 		setSelectedRowKeys([]);
 		setSelectedRows([]);
 
 		setIsModalVisible(false);
 		setIsFetching(true);
-
-		onSaveSupplier(suppliersToSave);
 	}
 
 	function onSaveSupplier(data: any) {

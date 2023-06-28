@@ -24,7 +24,11 @@ const Clients = () => {
 	}, []);
 
 	function loadClientsData() {
-		api.get("/client/findAll").then((response) => {
+		api.get("/client/findAll", {
+			params: {
+				userId: localStorage.getItem("userId")
+			}
+		}).then((response) => {
 			console.log(response);
 			if (response.status === 200) {
 			  const clients = response.data.map((item: any) => {
@@ -108,7 +112,7 @@ const Clients = () => {
 					cnpj: client.identification,
 					name: client.name,
 					phone: client.tel,
-					idUser: null
+					idUser: localStorage.getItem("userId")
 				}
 			});
 		
