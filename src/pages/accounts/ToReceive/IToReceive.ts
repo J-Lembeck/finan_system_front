@@ -18,7 +18,7 @@ export type ToPayTableData = {
 }
 
 export type ValueForm = {
-    idSupplier: number;
+    idClient: number;
     idCategory: number;
     idBank: number;
     emissionDateString: string;
@@ -44,7 +44,7 @@ export interface IToPayModalProps {
     form: any;
     // newList: ValueForm[];
     // setNewList: (data: ValueForm[]) => void;
-    supplierList: any;
+    clientList: any;
     categoryList: any;
     bankList: any;
 }
