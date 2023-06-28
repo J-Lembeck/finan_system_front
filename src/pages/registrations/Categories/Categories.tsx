@@ -95,8 +95,6 @@ const Categories = () => {
 			}
 		);
 
-		console.log(categoriesToSave);
-
 		if(isNewCategory) {
 			api.post("/category", categoriesToSave)
 			.then((response) => {
@@ -121,7 +119,6 @@ const Categories = () => {
 	}
 
 	function onSaveCategory(data: any) {
-		
 		if (data) {
 			Notification({
 				type: "success",
@@ -149,7 +146,6 @@ const Categories = () => {
 			setIsFetching(true);
 			onDeleteCategory(response);
 		})
-
 	}
 
 	function onDeleteCategory(response: any) {
