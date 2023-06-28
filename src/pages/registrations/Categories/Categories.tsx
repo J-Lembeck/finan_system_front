@@ -6,6 +6,7 @@ import CategoriesTable from './components/CategoriesTable';
 import { Form } from "antd";
 import CategoriesModal from './components/CategoriesModal';
 import { Notification } from '../../../components/Notification/Notification';
+import api from '../../../services/api';
 
 const Categories = () => {
 
@@ -20,15 +21,32 @@ const Categories = () => {
 	const [form] = Form.useForm();
 
 	useEffect(() => {
-		const categorias = [
-			{ key: 1, id: 12345, description: 'Aluguel', type: 2 },
-			{ key: 2, id: 67890, description: 'Pagamento', type: 1 },
-			{ key: 3, id: 54321, description: 'IPTU', type: 2 },
-		];
-
-		setTableData(categorias);
-		setIsFetching(false);
+		loadCategoryData();
 	}, []);
+
+	function loadCategoryData() {
+		api.get("/category/findAll", {
+			params: {
+				userId: localStorage.getItem("userId")
+			}
+		}).then((response) => {
+			if(response.status = 200){
+				const categorias = response.data.map((item: any) => {
+					return {
+						key: item.id,
+						id: item.id,
+						description: item.description,
+						type: item.type
+					}
+				})
+
+				setTableData(categorias);
+				setIsFetching(false);
+			}
+		}).catch((err) => {
+			console.log("Erro")
+		})
+	}
 
 	function handleOpenModal(isNew: boolean) {
 		if (isNew) {
@@ -64,19 +82,35 @@ const Categories = () => {
 	}
 
 	function handleSave(data: ValueForm[]) {
-
 		const categoriesToSave = data.map(
 			category => {
-
-				const id = Math.floor(Math.random() * (9999 - 1 + 1)) + 1;
-
 				return {
-					id: isNewCategory ? id : selectedRows[0].id,
-					key: isNewCategory ? id : selectedRowKeys[0],
+					id: isNewCategory ? null : selectedRows[0].id,
+					key: isNewCategory ? null : selectedRowKeys[0],
 					description: category.description,
-					type: Number(category.type),
+					name: category.description,
+					type: category.type,
+					idUser: localStorage.getItem("userId")
 				}
+			}
+		);
+
+		console.log(categoriesToSave);
+
+		if(isNewCategory) {
+			api.post("/category", categoriesToSave)
+			.then((response) => {
+				setIsFetching(true);
+				loadCategoryData();
+				onSaveCategory(response);
 			});
+		} else {
+			api.put("/category", categoriesToSave[0]).then((response) => {
+				setIsFetching(true);
+				loadCategoryData();
+				onSaveCategory(response);
+			})
+		}
 
 		setSelectedRowKeys([]);
 		setSelectedRows([]);
@@ -84,10 +118,10 @@ const Categories = () => {
 		setIsModalVisible(false);
 		setIsFetching(true);
 
-		onSaveCategory(categoriesToSave);
 	}
 
 	function onSaveCategory(data: any) {
+		
 		if (data) {
 			Notification({
 				type: "success",
@@ -110,20 +144,15 @@ const Categories = () => {
 	};
 
 	function handleDelete() {
+		api.delete(`/category?ids=${selectedRowKeys}`)
+		.then((response) => {
+			setIsFetching(true);
+			onDeleteCategory(response);
+		})
 
-		let tableList = [...tableData];
-
-		selectedRows.forEach(row => {
-			const i = tableList.findIndex((category) => (category.id === row.id));
-			tableList.splice(i, 1);
-		});
-
-		setIsFetching(true);
-
-		onDeleteCategory(tableList);
 	}
 
-	function onDeleteCategory(response: CategoriesTableData[]) {
+	function onDeleteCategory(response: any) {
         if(response){
             Notification({
                 type: "success", 
@@ -131,8 +160,8 @@ const Categories = () => {
             });
         }
 
-		setTableData(response);
-        
+		setIsFetching(true);
+		loadCategoryData();
 		setIsFetching(false);
     };
 

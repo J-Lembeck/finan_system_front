@@ -32,7 +32,7 @@ const CategoriesTable = ({
             key: "type",
             align: "left",
             width: 300,
-            render: (type) => type === 1 ? "Contas a pagar" : "Contas a receber"
+            render: (type) => type === "PAY" ? "Contas a pagar" : "Contas a receber"
         },
     ];
 

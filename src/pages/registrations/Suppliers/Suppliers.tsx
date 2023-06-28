@@ -6,6 +6,7 @@ import { Key } from 'antd/es/table/interface'
 import { SuppliersTableData, ValueForm } from './ISuppliers'
 import { Form } from "antd";
 import { Notification } from '../../../components/Notification/Notification'
+import api from '../../../services/api';
 
 const Supliers = () => {
 
@@ -20,6 +21,30 @@ const Supliers = () => {
 	const [form] = Form.useForm();
 
 	useEffect(() => {
+
+		api.get("/supplier/findAll", {
+			params: {
+				userId: localStorage.getItem("userId")
+			}
+		}).then((response) => {
+			if(response.status = 200){
+				const fornecedores = response.data.map((item: any) => {
+					return {
+						key: item.id,
+						id: item.id,
+						identification: item.cnpj,
+						name: item.name,
+						tel: item.phone
+					}
+				})
+
+				setTableData(fornecedores);
+				setIsFetching(false);
+			}
+		}).catch((err) => {
+			console.log("Erro")
+		})
+
 		const fornecedores = [
 			{ key: 1, id: 12345, identification: '123.456.789-00', name: 'Teste I', tel: '47 99999-8888' },
 			{ key: 2, id: 67890, identification: '12.345.678/0001-90', name: 'Teste II', tel: '47 11111-2222' },
@@ -102,9 +127,10 @@ const Supliers = () => {
 				return {
 					id: isNewSupplier ? id : selectedRows[0].id,
 					key: isNewSupplier ? id : selectedRowKeys[0],
-					identification: supplier.identification,
+					cnpj: supplier.identification,
 					name: supplier.name,
-					tel: supplier.tel,
+					phone: supplier.tel,
+					idUser: localStorage.getItem("userId")
 				}
 			});
 

@@ -87,7 +87,7 @@ const CategoriesModal = ({
                         >
                             <Select
                                 defaultValue="Selecione"
-                                options={[{ value: 1, label: 'Contas a pagar' }, { value: 2, label: 'Contas a receber' }]}
+                                options={[{ value: "PAY", label: 'Contas a pagar' }, { value: "RECEIVE", label: 'Contas a receber' }]}
                             />
 
                         </Form.Item>
@@ -120,7 +120,7 @@ const CategoriesModal = ({
                                 return (
                                     <Row key={category.description + category.type} align="middle" gutter={2}>
                                         <Col span={12}>{category.description}</Col>
-                                        <Col span={8}>{category.type === 1 ? "Contas a pagar" : "Contas a receber"}</Col>
+                                        <Col span={8}>{category.type === "PAY" ? "Contas a pagar" : "Contas a receber"}</Col>
                                         <Col span={1}>
                                             <Button
                                                 disabled={editDisebled}
