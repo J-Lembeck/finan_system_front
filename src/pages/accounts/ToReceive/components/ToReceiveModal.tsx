@@ -10,7 +10,7 @@ const ToReceiveModal = ({
     handleCancel,
     handleSave,
     form,
-    supplierList,
+    clientList,
     categoryList,
     bankList
 }: IToPayModalProps) => {
@@ -50,13 +50,13 @@ const ToReceiveModal = ({
                     </Col>
                     <Col span={14}>
                         <Form.Item
-                            name="idSupplier"
-                            label="Fornecedor"
+                            name="idClient"
+                            label="Cliente"
                             rules={[{ required: true, message: "Campo obrigatório" }]}
                         >
                             <Select
                                 defaultValue="Selecione"
-                                options={supplierList}
+                                options={clientList}
                             />
                         </Form.Item>
                     </Col>

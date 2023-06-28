@@ -16,14 +16,14 @@ const ToReceive = () => {
 	const [selectedRows, setSelectedRows] = useState<ToPayTableData[]>([]);
 	const [isModalVisible, setIsModalVisible] = useState(false);
     const [isNewBill, setIsNewBill] = useState(true);
-	const [suppliersList, setSuppliersList] = useState([]);
+	const [clientList, setClientList] = useState([]);
     const [categoryList, setCategoryList] = useState([]);
     const [bankList, setBankList] = useState([]);
 	const [form] = Form.useForm();
 
     useEffect(() => {
 		loadAccounts();
-		loadSuppliers();
+		loadClients();
         loadCategories();
         loadBanks();
 	}, []);
@@ -51,8 +51,8 @@ const ToReceive = () => {
 		})
 	}
 
-    function loadSuppliers(){
-        api.get("/supplier/findAll", {
+    function loadClients(){
+        api.get("/client/findAll", {
             params: {
                 userId: localStorage.getItem("userId")
             }
@@ -65,7 +65,7 @@ const ToReceive = () => {
                         label: item.name
 					}
 				})
-				setSuppliersList(fornecedores);
+				setClientList(fornecedores);
             }
         })
     }
@@ -122,7 +122,7 @@ const ToReceive = () => {
 			form.resetFields();
 		} else {
 			form.setFieldsValue({
-                idSupplier: selectedRows[0].idSupplier,
+                idClient: selectedRows[0].idCliente,
                 idCategory: selectedRows[0].idCategory,
                 idBank: selectedRows[0].idBank,
                 emissionDateString: moment(selectedRows[0].emissionDateString),
@@ -150,7 +150,7 @@ const ToReceive = () => {
 				return {
 					id: isNewBill ? null : selectedRows[0].id,
 					key: isNewBill ? null : selectedRowKeys[0],
-                    idSupplier: bill.idSupplier,
+                    idClient: bill.idClient,
                     idCategory: bill.idCategory,
                     idBank: bill.idBank,
                     idUser: localStorage.getItem("userId"),
@@ -208,20 +208,14 @@ const ToReceive = () => {
 	};
 
     function handleDelete() {
-
-		let tableList = [...tableData];
-
-		selectedRows.forEach(row => {
-			const i = tableList.findIndex((category) => (category.id === row.id));
-			tableList.splice(i, 1);
-		});
-
-		setIsFetching(true);
-
-		onDeleteBill(tableList);
+		api.delete(`/accounting_record?ids=${selectedRowKeys}`)
+		.then((response) => {
+			setIsFetching(true);
+			onDeleteBill(response);
+		})
 	}
 
-    function onDeleteBill(response: ToPayTableData[]) {
+    function onDeleteBill(response: any) {
         if(response){
             Notification({
                 type: "success", 
@@ -229,8 +223,8 @@ const ToReceive = () => {
             });
         }
 
-		setTableData(response);
-        
+		setIsFetching(true);
+		loadAccounts();
 		setIsFetching(false);
     };
 
@@ -257,7 +251,7 @@ const ToReceive = () => {
 					handleCancel={handleCloseCategoryModal}
 					handleSave={handleSave}
 					form={form}
-					supplierList={suppliersList}
+					clientList={clientList}
 					bankList={bankList}
 					categoryList={categoryList}
 				/>

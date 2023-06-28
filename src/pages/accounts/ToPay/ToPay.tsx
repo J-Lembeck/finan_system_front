@@ -208,20 +208,14 @@ const ToPay = () => {
 	};
 
     function handleDelete() {
-
-		let tableList = [...tableData];
-
-		selectedRows.forEach(row => {
-			const i = tableList.findIndex((category) => (category.id === row.id));
-			tableList.splice(i, 1);
-		});
-
-		setIsFetching(true);
-
-		onDeleteBill(tableList);
+		api.delete(`/accounting_record?ids=${selectedRowKeys}`)
+		.then((response) => {
+			setIsFetching(true);
+			onDeleteBill(response);
+		})
 	}
 
-    function onDeleteBill(response: ToPayTableData[]) {
+    function onDeleteBill(response: any) {
         if(response){
             Notification({
                 type: "success", 
@@ -229,8 +223,8 @@ const ToPay = () => {
             });
         }
 
-		setTableData(response);
-        
+		setIsFetching(true);
+		loadAccounts();
 		setIsFetching(false);
     };
 
