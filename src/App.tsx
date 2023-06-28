@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import "./App.sass"
 import Home from "./pages/Home/Home";
 import Login from "./pages/Login/Login";
@@ -19,8 +19,7 @@ function App() {
         <SideMenu />
         <Routes>
           <Route path="/">
-            <Route index element={<Home />}/>
-            <Route path="login" element={<Login />}/>
+            <Route index element={<Login />}/>
             <Route path="dashboard" element={<Dashboard />}/>
             <Route path="*" element={<NotFound />} />
             <Route path="suppliers" element={<Supliers />} />

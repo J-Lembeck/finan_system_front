@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Icon } from '@iconify/react';
 import type { MenuProps, MenuTheme } from 'antd';
 import { Menu, Switch } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -39,6 +39,10 @@ const items: MenuItem[] = [
 ];
 
 export default function SideMenu() {
+
+    const location = useLocation();
+    const isIndexPath = location.pathname === '/';
+
     const [theme, setTheme] = useState<MenuTheme>('dark');
     const [current, setCurrent] = useState('1');
 
@@ -63,16 +67,18 @@ export default function SideMenu() {
             </div>
             <br />
             <br /> */}
-            <Menu
-                theme={theme}
-                onClick={onClick}
-                style={{ width: 256 }}
-                defaultOpenKeys={['sub1']}
-                selectedKeys={[current]}
-                mode="inline"
-                items={items}
-                id="main-menu"
-            />
+            {!isIndexPath && 
+                <Menu
+                    theme={theme}
+                    onClick={onClick}
+                    style={{ width: 256 }}
+                    defaultOpenKeys={['sub1']}
+                    selectedKeys={[current]}
+                    mode="inline"
+                    items={items}
+                    id="main-menu"
+                />
+            }
         </>
     );
 };

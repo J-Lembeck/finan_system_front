@@ -78,8 +78,6 @@ function Dashboard() {
                         tension: 0.1
                     }]
                 }
-                console.log(dataValidated);
-
                 setData(dataValidated);
             }
         })
