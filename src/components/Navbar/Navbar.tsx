@@ -45,7 +45,7 @@ const Navbar = () => {
         <>
             {!isIndexPath &&
             <nav className='navbar'>
-                <h1 style={{ color: "white" }}>LOGO</h1>
+                <h1 style={{ color: "white" }}>FINANSystem</h1>
                 <Dropdown menu={{ items }} placement="bottomRight" arrow>
                     <Avatar size={40} icon={<UserOutlined />} />
                 </Dropdown>
