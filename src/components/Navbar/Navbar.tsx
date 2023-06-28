@@ -1,8 +1,12 @@
+import { useLocation } from "react-router-dom";
 import { UserOutlined } from '@ant-design/icons';
 import "./style.sass";
 import { Avatar, Dropdown, MenuProps } from 'antd';
 
 const Navbar = () => {
+
+    const location = useLocation();
+    const isIndexPath = location.pathname === '/';
 
     const items: MenuProps['items'] = [
         {
@@ -33,12 +37,15 @@ const Navbar = () => {
 
 
     return (
-        <nav className='navbar'>
-            <h1 style={{ color: "white" }}>LOGO</h1>
-            <Dropdown menu={{ items }} placement="bottomRight" arrow>
-                <Avatar size={40} icon={<UserOutlined />} />
-            </Dropdown>
-        </nav>
+        <>
+            {!isIndexPath &&
+            <nav className='navbar'>
+                <h1 style={{ color: "white" }}>LOGO</h1>
+                <Dropdown menu={{ items }} placement="bottomRight" arrow>
+                    <Avatar size={40} icon={<UserOutlined />} />
+                </Dropdown>
+            </nav>}
+        </>
     )
 }
 
