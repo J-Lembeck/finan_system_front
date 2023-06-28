@@ -1,10 +1,11 @@
 import api from "../../services/api"
 import { useNavigate } from 'react-router-dom';
-import { Form, Input, Button } from "antd";
+import { Form, Input, Button, message } from "antd";
 
 function Login() {
 
     const navigate = useNavigate();
+    const [messageApi, contextHolder] = message.useMessage();
 
     const onFinish = (values: any) => {
         api.post("/user/login", {
@@ -12,15 +13,17 @@ function Login() {
             password: values.passWord
         }).then((response) => {
             if(response.data.auth){
-                console.log(response.data.id)
                 localStorage.setItem("userId", response.data.id);
                 navigate("/dashboard");
+            }else{
+                messageApi.warning('Login incorreto.');
             }
         })
     }
 
     return (
-        <div className="container">
+        <div className="container-login">
+            {contextHolder}
             <Form
                 name="login"
                 className="form-login"
@@ -44,7 +47,7 @@ function Login() {
                 </Form.Item>
                 <Form.Item wrapperCol={{ span: 16 }}>
                     <Button type="primary" htmlType="submit">
-                        Submit
+                        Login
                     </Button>
                 </Form.Item>
             </Form>
