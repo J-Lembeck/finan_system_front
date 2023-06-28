@@ -1,10 +1,15 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useState } from "react";
 import { UserOutlined } from '@ant-design/icons';
 import "./style.sass";
 import { Avatar, Dropdown, MenuProps } from 'antd';
+import ChangePasswordModal from "./components/ChangePasswordModal";
 
 const Navbar = () => {
 
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const navigate = useNavigate();
     const location = useLocation();
     const isIndexPath = location.pathname === '/';
 
@@ -15,12 +20,25 @@ const Navbar = () => {
                 <a onClick={handleChangePassword}>
                     Trocar senha
                 </a>
-            ),
+            )
+        },
+        {
+            key: '2',
+            label: (
+                <a onClick={handleLogOut}>
+                    Sair
+                </a>
+            )
         }
     ];
 
     function handleChangePassword() {
-        console.log("aaa")
+        setIsModalOpen(true);
+    }
+
+    function handleLogOut() {
+        localStorage.removeItem("userId");
+        navigate("/");
     }
 
     return (
@@ -32,6 +50,11 @@ const Navbar = () => {
                     <Avatar size={40} icon={<UserOutlined />} />
                 </Dropdown>
             </nav>}
+
+            <ChangePasswordModal
+                isModalOpen={isModalOpen}
+                setIsModalOpen={setIsModalOpen}
+            />
         </>
     )
 }
