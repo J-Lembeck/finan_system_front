@@ -1,9 +1,9 @@
 import { Table } from 'antd'
 import { ColumnsType } from 'antd/es/table';
-import { ToPayTableData, ToPayTableProps } from '../IToPay'
+import { ToPayTableData, ToPayTableProps } from '../IToReceive'
 import moment from 'moment';
 
-const ToPayTable = ({
+const ToReceiveTable = ({
     isFetching,
     tableData,
     selectedRowKeys,
@@ -61,4 +61,4 @@ const ToPayTable = ({
     )
 }
 
-export default ToPayTable
+export default ToReceiveTable

@@ -1,10 +1,10 @@
 import { Col, Modal, Row, Form, Select, Input, DatePicker } from 'antd';
 import { Notification } from '../../../../components/Notification/Notification';
-import { IToPayModalProps } from '../IToPay';
+import { IToPayModalProps } from '../IToReceive';
 import { useEffect, useState } from 'react';
 import api from '../../../../services/api';
 
-const ToPayModal = ({
+const ToReceiveModal = ({
     isModalVisible,
     isNew,
     handleCancel,
@@ -15,7 +15,7 @@ const ToPayModal = ({
     bankList
 }: IToPayModalProps) => {
 
-    const modalTitle = isNew ? "Nova saida" : "Editar saida";
+    const modalTitle = isNew ? "Nova entrada" : "Editar entrada";
 
     return (
         <Modal
@@ -132,4 +132,4 @@ const ToPayModal = ({
     )
 }
 
-export default ToPayModal
+export default ToReceiveModal

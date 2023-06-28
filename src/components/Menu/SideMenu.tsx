@@ -27,7 +27,7 @@ const items: MenuItem[] = [
 
     getItem('Contas', 'sub1', <Icon icon="ph:money-thin" style={{ fontSize: "20px" }} />, [
         getItem(<Link to="/topay" >A pagar</Link>, '3'),
-        getItem('A receber', '4'),
+        getItem(<Link to="/toReceive" >A receber</Link>, '4'),
     ]),
 
     getItem('Cadastros', 'sub2', <Icon icon="carbon:enterprise" style={{ fontSize: "20px" }} />, [

@@ -89,15 +89,15 @@ function Dashboard() {
                 <div className="cards-container">
                     <Card style={{width: "31%"}}>
                         <p>Entradas do último mês</p>
-                        <h1>R$ {dashboard?.receivedValue}</h1>
+                        <h1>R$ {dashboard?.receivedValue?.toFixed(2)}</h1>
                     </Card>
                     <Card style={{width: "31%"}}>
                         <p>Saídas do último mês</p>
-                        <h1>R$ {dashboard?.paidValue}</h1>
+                        <h1>R$ {dashboard?.paidValue?.toFixed(2)}</h1>
                     </Card>
                     <Card style={{width: "31%"}}>
                         <p>Balanço final</p>
-                        <h1>R$ {dashboard?.finalBalance}</h1>
+                        <h1>R$ {dashboard?.finalBalance?.toFixed(2)}</h1>
                     </Card>
                 </div>
                 <div style={{height: "100%", marginTop: "2rem"}}>

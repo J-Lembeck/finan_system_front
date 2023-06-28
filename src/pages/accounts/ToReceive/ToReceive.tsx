@@ -1,14 +1,14 @@
 import React, { Key, useEffect, useState } from 'react'
 import TopButtons from '../../../components/TopButtons/TopButtons'
-import { ToPayTableData, ValueForm } from './IToPay';
+import { ToPayTableData, ValueForm } from './IToReceive';
 import { Notification } from '../../../components/Notification/Notification';
 import { Form } from "antd";
-import ToPayTable from './components/ToPayTable';
-import ToPayModal from './components/ToPayModal';
+import ToPayTable from './components/ToReceiveTable';
+import ToPayModal from './components/ToReceiveModal';
 import moment from 'moment';
 import api from '../../../services/api';
 
-const ToPay = () => {
+const ToReceive = () => {
 
     const [tableData, setTableData] = useState<ToPayTableData[]>([]);
 	const [isFetching, setIsFetching] = useState(true);
@@ -32,13 +32,13 @@ const ToPay = () => {
 		api.get("/accounting_record/findByType", {
 			params: {
 				userId: localStorage.getItem("userId"),
-				type: false
+				type: true
 			}
 		}).then((response) => {
 			if(response.status = 200){
 				const accounts = response.data.map((item: any) => {
 					return {
-						key: item.id,
+						key: item.id, 
 						...item
 					}
 				})
@@ -159,7 +159,7 @@ const ToPay = () => {
                     maturityDateString: moment(bill.maturityDateString).format("DD-MM-YYYY"),
                     observation: bill.observation,
                     value: bill.value,
-                    type: false,
+                    type: true,
 				}
 			});
 
@@ -243,7 +243,7 @@ const ToPay = () => {
 		<main id="main">
 			<div className='main-container'>
 				<TopButtons
-					pageTittle='Contas a pagar'
+					pageTittle='Contas a receber'
 					mainButtonTitle="Nova conta"
 					handleNew={() => handleOpenModal(true)}
 					handleEdit={() => handleOpenModal(false)}
@@ -272,4 +272,4 @@ const ToPay = () => {
 	)
 }
 
-export default ToPay
+export default ToReceive

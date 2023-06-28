@@ -11,6 +11,7 @@ import Categories from "./pages/registrations/Categories/Categories";
 import Clients from "./pages/registrations/Clients/Clients";
 import Navbar from "./components/Navbar/Navbar";
 import ToPay from "./pages/accounts/ToPay/ToPay";
+import ToReceive from "./pages/accounts/ToReceive/ToReceive";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
             <Route path="categories" element={<Categories />} />
             <Route path="clients" element={<Clients />} />
             <Route path="toPay" element={<ToPay />} />
+            <Route path="toReceive" element={<ToReceive />} />
           </Route>
         </Routes>
       </div>
