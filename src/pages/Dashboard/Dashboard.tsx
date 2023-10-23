@@ -44,7 +44,7 @@ function Dashboard() {
 
         api.get("/accounting_record/findDashboard", {
             params: {
-                userId: 1,
+                userId: localStorage.getItem("userId"),
                 paymentDate: formattedDate
             }
         }).then((response) => {
